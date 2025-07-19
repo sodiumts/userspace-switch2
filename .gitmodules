@@ -1,6 +1,3 @@
 [submodule "libs/hidapi"]
 	path = libs/hidapi
 	url = https://github.com/libusb/hidapi
-[submodule "libs/libusb"]
-	path = libs/libusb
-	url = https://github.com/libusb/libusb-cmake
