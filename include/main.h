@@ -1,0 +1,56 @@
+#pragma once
+
+#include <libusb.h>
+
+#define NINTENDO_VENID 0x057E
+#define USBINT_NUM 1
+
+#define SW2PRO_PID 0x2069
+#define SW2GCN_PID 0x2073
+
+#define INPUT_ENDPOINT 0x02
+#define OUTPUT_ENDPOINT 0x82
+
+#define IF_CTRL 2
+#define IF_STREAM 3
+#define ALT_SETTING 1
+
+#define ISO_ES_OUT 0x03
+#define SAMPLE_RATE 48000
+#define CHANNELS 2
+#define BITS_PER_SAMPLE 16
+
+#define FRAME_BYTES ((SAMPLE_RATE/1000) * (BITS_PER_SAMPLE/8) * CHANNELS)
+#define NUM_PACKETS 1
+
+
+#define BUTTON_B 0x01
+#define BUTTON_A 0x02
+#define BUTTON_Y 0x04
+#define BUTTON_X 0x08
+#define BUTTON_R 0x10
+#define BUTTON_ZR 0x20
+#define BUTTON_PLUS 0x40
+#define BUTTON_STICK_R 0x80
+#define BUTTON_DPAD_DOWN 0x01
+#define BUTTON_DPAD_RIGHT 0x02
+#define BUTTON_DPAD_LEFT 0x04
+#define BUTTON_DPAD_UP 0x08
+#define BUTTON_L 0x10
+#define BUTTON_ZL 0x20
+#define BUTTON_MINUS 0x40
+#define BUTTON_STICK_L 0x80
+#define BUTTON_HOME 0x01
+#define BUTTON_CAPTURE 0x02
+#define BUTTON_GR 0x04
+#define BUTTON_GL 0x08
+#define BUTTON_CHAT 0x10
+
+#define LEFT_ANALOGUE_BYTE 13
+#define RIGHT_ANALOGUE_BYTE 14
+
+#define TRIGGER_RANGE_MIN 36
+#define TRIGGER_RANGE_MAX 230
+
+#define LEFT_STICK_BYTE 6
+#define RIGHT_STICK_BYTE 9
