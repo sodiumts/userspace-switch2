@@ -1,5 +1,8 @@
 #include "../include/main.h"
-#include "hidapi.h"
+#include "../include/ringbuffer.h"
+
+#include "pipewire/stream.h"
+#include "spa/param/audio/raw.h"
 
 #include <fcntl.h>
 #include <libusb.h>
@@ -7,7 +10,7 @@
 #include <linux/input.h>
 #include <linux/uinput.h>
 
-#include <math.h>
+#include <pthread.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -17,6 +20,8 @@
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <pipewire/pipewire.h>
+#include <spa/param/audio/format-utils.h>
 
 const unsigned char INITCMD_03 [] = {0x03, 0x91, 0x00, 0x0D, 0x00, 0x08, 0x00, 0x00, 0x01, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 const unsigned char UNKNOWNCMD_07 [] = {0x07, 0x91, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00};
@@ -42,97 +47,6 @@ typedef struct {
     const unsigned char *data;
     size_t length;
 } Command;
-
-struct ButtonMapping {
-    unsigned char mask;
-    int code;
-    int payloadByte;
-    int lastState;
-};
-
-
-struct ButtonMapping buttons[] = {
-    {BUTTON_A, BTN_EAST, 3, 0},
-    {BUTTON_B, BTN_SOUTH, 3, 0},
-    {BUTTON_X, BTN_NORTH, 3, 0},
-    {BUTTON_Y, BTN_WEST, 3, 0},
-    {BUTTON_L, BTN_TL, 4, 0},
-    {BUTTON_R, BTN_TR, 3, 0},
-    {BUTTON_ZL, BTN_TL2, 4, 0},
-    {BUTTON_ZR, BTN_TR2, 3, 0},
-    {BUTTON_STICK_L, BTN_THUMBL, 4, 0},
-    {BUTTON_STICK_R, BTN_THUMBR, 3, 0},
-    {BUTTON_PLUS, BTN_START, 3, 0},
-    {BUTTON_MINUS, BTN_SELECT, 4, 0},
-    {BUTTON_CAPTURE, BTN_Z, 5, 0},
-    {BUTTON_HOME, BTN_MODE, 5, 0}
-};
-
-struct DpadMapping {
-    unsigned char mask;
-    int payloadByte;
-    int lastState;
-};
-
-enum {DPAD_DOWN = 0, DPAD_UP, DPAD_LEFT, DPAD_RIGHT};
-
-struct DpadMapping dpad[] = {
-    {BUTTON_DPAD_DOWN, 4, 0},
-    {BUTTON_DPAD_UP, 4, 0},
-    {BUTTON_DPAD_LEFT, 4, 0},
-    {BUTTON_DPAD_RIGHT, 4, 0},
-};
-
-struct AnalogueTriggers {
-    int payloadByte;
-    int code;
-    unsigned char lastState;
-};
-
-enum {LEFT_TRIGGER = 0, RIGHT_TRIGGER};
-struct AnalogueTriggers triggers [] = {
-    {LEFT_ANALOGUE_BYTE, ABS_Z, 0},
-    {RIGHT_ANALOGUE_BYTE, ABS_RZ, 0}
-};
-
-struct AnalogueStick {
-    int payloadStart;
-    int length;
-    int codeX;
-    int codeY;
-    uint16_t lastStateX;
-    uint16_t lastStateY;
-};
-
-enum {LEFT_STICK = 0, RIGHT_STICK};
-struct AnalogueStick sticks [] = {
-    {LEFT_STICK_BYTE, 3, ABS_X, ABS_Y, 0, 0},
-    {RIGHT_STICK_BYTE, 3, ABS_RX, ABS_RY, 0, 0}
-};
-
-#define NUM_STICKS 2
-#define NUM_TRIGGERS 2
-
-#define NUM_MAPPINGS (sizeof(buttons) / sizeof(buttons[0]))
-#define NUM_DPAD 4
-
-int emmitableButtons[] = {
-    BTN_NORTH,
-    BTN_SOUTH,
-    BTN_EAST,
-    BTN_WEST,
-    BTN_TL,
-    BTN_TR,
-    BTN_TL2,
-    BTN_TR2,
-    BTN_THUMBL,
-    BTN_THUMBR,
-    BTN_START,
-    BTN_SELECT,
-    BTN_Z,
-    BTN_MODE
-};
-
 
 Command commands [] = {
     {INITCMD_03, sizeof(INITCMD_03)},
@@ -170,39 +84,50 @@ Command commands [] = {
 #define NUM_PACKETS 3
 
 static unsigned char *frame_buf;
-static double phase = 0.0;
-static double phase_inc = 2 * M_PI * FREQUENCY / SAMPLE_RATE; 
 
 static struct libusb_transfer *xfer;
 
 #define SAMPLES_PER_PACKET (PACKET_SIZE / BYTES_PER_SAMPLE)  
 #define SAMPLES_PER_FRAME (SAMPLES_PER_PACKET * NUM_PACKETS)  
 
+#define RINGBUF_MS      100
+#define RINGBUF_SIZE  ((SAMPLE_RATE * CHANNELS * sizeof(int16_t) * RINGBUF_MS) / 1000)
+
+struct audio_data {
+    struct pw_context *context;
+    struct pw_core *core;
+    struct pw_stream *capture_stream;
+    struct pw_main_loop *loop;
+    ring_buffer_t *ringbuf;
+};
+
+struct audio_data global_audio;
+
+void init_pipewire_capture(struct audio_data *data);
+
+static void *pipewire_thread(void *arg) {
+    struct audio_data *data = arg;
+    pw_main_loop_run(data->loop);
+    return NULL;
+}
+
 static void LIBUSB_CALL audio_transfer_cb(struct libusb_transfer *t) {
+    struct audio_data *data = t->user_data;
+    
     if (t->status != LIBUSB_TRANSFER_COMPLETED) {
         fprintf(stderr, "Audio transfer error: %d\n", t->status);
-        libusb_free_transfer(t);
-        free(frame_buf);
-        xfer = NULL;
         return;
     }
-
-    int16_t *pcm = (int16_t*)frame_buf;
-    for (int i = 0; i < SAMPLES_PER_FRAME; i++) {
-        double value = sin(phase) * 0.3; 
-        int16_t s = (int16_t)(value * 32767);
-        pcm[i * CHANNELS] = s;
-        pcm[i * CHANNELS + 1] = s;
-        phase += phase_inc;
-        if (phase >= 2*M_PI) phase -= 2*M_PI;
+    
+    size_t read = ring_buffer_read(data->ringbuf, t->buffer, FRAME_BYTES);
+    
+    if (read < FRAME_BYTES) {
+        // underrun
+        memset(t->buffer + read, 0, FRAME_BYTES - read);
     }
-
-    // Resubmit transfer
+    
     if (libusb_submit_transfer(t) < 0) {
         fprintf(stderr, "Failed to resubmit audio transfer\n");
-        libusb_free_transfer(t);
-        free(frame_buf);
-        xfer = NULL;
     }
 }
 
@@ -224,6 +149,101 @@ int send_init_sequence(libusb_device_handle *devHandle) {
             return res;
         }
     }
+    return 0;
+}
+
+int handle_audio(libusb_device_handle *devHandle) {
+    int res = libusb_claim_interface(devHandle, IF_CTRL);
+    if (res != 0) {
+        printf("Libusb audio control interface claim error %s\n", libusb_strerror(res));
+    }
+    res = libusb_claim_interface(devHandle, IF_STREAM);
+    if (res != 0) {
+        printf("Libusb audio stream interface claim error %s\n", libusb_strerror(res));
+    }
+
+
+    res = libusb_set_interface_alt_setting(devHandle, IF_STREAM, ALT_SETTING);
+    if (res != 0) {
+        printf("Libusb alt setting error %s\n", libusb_strerror(res));
+    }
+
+    init_pipewire_capture(&global_audio);
+
+    pthread_t pw_thread;
+    pthread_create(&pw_thread, NULL, pipewire_thread, &global_audio);
+
+    uint32_t sample_rate = htole32(SAMPLE_RATE); 
+    libusb_control_transfer(
+        devHandle,
+        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
+        SET_CUR,
+        (SAMPLING_FREQ_CONTROL << 8),
+        IF_STREAM,  
+        (unsigned char*)&sample_rate,
+        sizeof(sample_rate),
+        1000
+    );
+
+    uint8_t unmute = 0x00;
+    libusb_control_transfer(
+        devHandle,
+        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
+        SET_CUR,
+        (MUTE_CONTROL << 8) | 0x01, 
+        IF_STREAM,
+        &unmute,
+        sizeof(unmute),
+        1000
+    );
+
+    xfer = libusb_alloc_transfer(NUM_PACKETS);
+    if (!xfer) {
+        fprintf(stderr, "Failed to allocate transfer\n");
+        return 1;
+    }
+
+    frame_buf = malloc(FRAME_BYTES);
+    if (!frame_buf) {
+        fprintf(stderr, "Failed to allocate audio buffer\n");
+        libusb_free_transfer(xfer);
+        return 1;
+    }
+
+    memset(frame_buf, 0, FRAME_BYTES);
+
+    libusb_fill_iso_transfer(
+        xfer,
+        devHandle,
+        ISO_ES_OUT, 
+        frame_buf,
+        FRAME_BYTES,
+        NUM_PACKETS,
+        audio_transfer_cb,
+        &global_audio,
+        0 
+    );
+    for (int i = 0; i < NUM_PACKETS; i++) {
+        xfer->iso_packet_desc[i].length = PACKET_SIZE;
+    }
+
+    int r = libusb_submit_transfer(xfer);
+    if (r < 0) {
+        fprintf(stderr, "libusb_submit_transfer failed: %s\n", libusb_error_name(r));
+        libusb_free_transfer(xfer);
+        free(frame_buf);
+        return r;
+    }
+
+    printf("Audio transfer submitted successfully\n");
+
+    while (xfer) {
+        if (libusb_handle_events_completed(NULL, NULL) < 0)
+            break;
+    }
+    libusb_release_interface(devHandle, IF_STREAM);
+    libusb_release_interface(devHandle, IF_CTRL);
+    
     return 0;
 }
 
@@ -265,93 +285,9 @@ int init_usb_state(libusb_device *dev) {
         return res;
     }
     printf("Released device interface\n");
+    
+    handle_audio(devHandle); 
 
-    res = libusb_claim_interface(devHandle, IF_CTRL);
-    if (res != 0) {
-        printf("Libusb audio control interface claim error %s\n", libusb_strerror(res));
-    }
-    res = libusb_claim_interface(devHandle, IF_STREAM);
-    if (res != 0) {
-        printf("Libusb audio stream interface claim error %s\n", libusb_strerror(res));
-    }
-
-
-    res = libusb_set_interface_alt_setting(devHandle, IF_STREAM, ALT_SETTING);
-    if (res != 0) {
-        printf("Libusb alt setting error %s\n", libusb_strerror(res));
-    }
-
-    uint32_t sample_rate = htole32(SAMPLE_RATE); 
-    libusb_control_transfer(
-        devHandle,
-        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
-        SET_CUR,
-        (SAMPLING_FREQ_CONTROL << 8),
-        IF_STREAM,  
-        (unsigned char*)&sample_rate,
-        sizeof(sample_rate),
-        1000
-    );
-
-    uint8_t unmute = 0x00;  // 0 = unmute
-    libusb_control_transfer(
-        devHandle,
-        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
-        SET_CUR,
-        (MUTE_CONTROL << 8) | 0x01, 
-        IF_STREAM,
-        &unmute,
-        sizeof(unmute),
-        1000
-    );
-
-    xfer = libusb_alloc_transfer(NUM_PACKETS);
-    if (!xfer) {
-        fprintf(stderr, "Failed to allocate transfer\n");
-        return 1;
-    }
-
-    frame_buf = malloc(FRAME_BYTES);
-    if (!frame_buf) {
-        fprintf(stderr, "Failed to allocate audio buffer\n");
-        libusb_free_transfer(xfer);
-        return 1;
-    }
-
-    memset(frame_buf, 0, FRAME_BYTES);
-
-    libusb_fill_iso_transfer(
-        xfer,
-        devHandle,
-        ISO_ES_OUT, 
-        frame_buf,
-        FRAME_BYTES,
-        NUM_PACKETS,
-        audio_transfer_cb,
-        NULL,
-        0 
-    );
-    for (int i = 0; i < NUM_PACKETS; i++) {
-        xfer->iso_packet_desc[i].length = PACKET_SIZE;
-    }
-
-    int r = libusb_submit_transfer(xfer);
-    if (r < 0) {
-        fprintf(stderr, "libusb_submit_transfer failed: %s\n", libusb_error_name(r));
-        libusb_free_transfer(xfer);
-        free(frame_buf);
-        return r;
-    }
-
-    printf("Audio transfer submitted successfully\n");
-
-    while (xfer) {
-        if (libusb_handle_events_completed(NULL, NULL) < 0)
-            break;
-    }
-    libusb_release_interface(devHandle, IF_STREAM);
-    libusb_release_interface(devHandle, IF_CTRL);
-     
     libusb_close(devHandle);
     printf("Closed device handle\n");
     return 0;
@@ -388,6 +324,74 @@ int emit_sync(int fd) {
     return emit_event(fd, EV_SYN, SYN_REPORT, 0);
 }
 
+static void on_process(void *userdata) {
+    struct audio_data *data = userdata;
+    struct pw_buffer *buf = pw_stream_dequeue_buffer(data->capture_stream);
+    
+    if (!buf) return;
+    
+    struct spa_buffer *spa_buf = buf->buffer;
+    int16_t *samples = spa_buf->datas[0].data;
+    size_t n_samples = spa_buf->datas[0].chunk->size / sizeof(int16_t);
+    
+    // Write to ring buffer
+    ring_buffer_write(data->ringbuf, (uint8_t*)samples, n_samples * sizeof(int16_t));
+    
+    pw_stream_queue_buffer(data->capture_stream, buf);
+}
+
+static const struct pw_stream_events capture_events = {
+    .process = on_process,
+};
+
+void init_pipewire_capture(struct audio_data *data) {
+    pw_init(NULL, NULL);
+    
+    data->loop = pw_main_loop_new(NULL);
+    data->context = pw_context_new(pw_main_loop_get_loop(data->loop), NULL, 0);
+    data->core = pw_context_connect(data->context, NULL, 0);
+    
+    data->ringbuf = ring_buffer_create(RINGBUF_SIZE);
+    
+    struct pw_properties *stream_props = pw_properties_new(
+        PW_KEY_MEDIA_TYPE, "Audio",
+        PW_KEY_MEDIA_CLASS, "Audio/Sink",
+        PW_KEY_MEDIA_CATEGORY, "Playback",
+        PW_KEY_MEDIA_ROLE, "Music",
+        PW_KEY_NODE_NAME, "switch2-audio-output",
+        PW_KEY_NODE_DESCRIPTION, "Switch 2 Pro Controller Audio",
+        "audio.channels", "2",
+        "audio.position", "[FL,FR]",
+        NULL
+    );
+    
+    data->capture_stream = pw_stream_new_simple(
+        pw_main_loop_get_loop(data->loop),
+        "Switch2-Audio-Playback",
+        stream_props,
+        &capture_events,
+        data
+    );
+    
+    // Set audio format
+    uint8_t buffer[1024];
+    struct spa_pod_builder b = SPA_POD_BUILDER_INIT(buffer, sizeof(buffer));
+    struct spa_audio_info_raw info = {
+        .format = SPA_AUDIO_FORMAT_S16,
+        .rate = 48000,
+        .channels = 2,
+        .position = { SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR }
+    };
+    const struct spa_pod *params[1] = {
+        spa_format_audio_raw_build(&b, SPA_PARAM_EnumFormat, &info)
+    };
+    
+    pw_stream_connect(data->capture_stream,
+                      PW_DIRECTION_INPUT,
+                      PW_ID_ANY,
+                      PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_RT_PROCESS | PW_STREAM_FLAG_MAP_BUFFERS,
+                      params, 1);
+}
 
 int main() {
     libusb_init_context(NULL, NULL, 0);
