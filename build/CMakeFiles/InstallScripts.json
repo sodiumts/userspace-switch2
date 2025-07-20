@@ -1,0 +1,12 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/cmake_install.cmake",
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/cmake_install.cmake",
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/cmake_install.cmake",
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/linux/cmake_install.cmake",
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/libusb/cmake_install.cmake",
+		"/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,810 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Linux - 6.15.6-arch1-1 - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /sbin/clang 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is Clang, found in:
+        /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/4.0.3-dirty/CompilerIdC/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_0c666/fast
+        /sbin/make  -f CMakeFiles/cmTC_0c666.dir/build.make CMakeFiles/cmTC_0c666.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5'
+        Building C object CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o
+        /sbin/clang   -v -MD -MT CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        clang version 20.1.8
+        Target: x86_64-pc-linux-gnu
+        Thread model: posix
+        InstalledDir: /usr/bin
+        Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-pc-linux-gnu/15.1.1
+        Found candidate GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1
+        Selected GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1
+        Candidate multilib: .;@m64
+        Candidate multilib: 32;@m32
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm, version 6.4.43483
+         (in-process)
+         "/usr/bin/clang-20" -cc1 -triple x86_64-pc-linux-gnu -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -fdebug-compilation-dir=/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5 -v -fcoverage-compilation-dir=/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5 -resource-dir /usr/lib/clang/20 -dependency-file CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -sys-header-deps -internal-isystem /usr/lib/clang/20/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../x86_64-pc-linux-gnu/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -ferror-limit 19 -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 20.1.8 based upon LLVM 20.1.8 default target x86_64-pc-linux-gnu
+        ignoring nonexistent directory "/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../x86_64-pc-linux-gnu/include"
+        ignoring nonexistent directory "/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/clang/20/include
+         /usr/local/include
+         /usr/include
+        End of search list.
+        Linking C executable cmTC_0c666
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_0c666.dir/link.txt --verbose=1
+        clang version 20.1.8
+        Target: x86_64-pc-linux-gnu
+        Thread model: posix
+        InstalledDir: /usr/bin
+        Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-pc-linux-gnu/15.1.1
+        Found candidate GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1
+        Selected GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1
+        Candidate multilib: .;@m64
+        Candidate multilib: 32;@m32
+        Selected multilib: .;@m64
+        Found HIP installation: /opt/rocm, version 6.4.43483
+         "/usr/bin/ld" --hash-style=gnu --build-id --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_0c666 /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/Scrt1.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crti.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o -L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1 -L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/lib -L/usr/lib -v CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crtn.o
+        GNU ld (GNU Binutils) 2.44.0
+        /sbin/clang  -v -Wl,-v CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -o cmTC_0c666
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:191 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/clang/20/include]
+          add: [/usr/local/include]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/clang/20/include] ==> [/usr/lib/clang/20/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/clang/20/include;/usr/local/include;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:227 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5']
+        ignore line: []
+        ignore line: [Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_0c666/fast]
+        ignore line: [/sbin/make  -f CMakeFiles/cmTC_0c666.dir/build.make CMakeFiles/cmTC_0c666.dir/build]
+        ignore line: [make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5']
+        ignore line: [Building C object CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/sbin/clang   -v -MD -MT CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang version 20.1.8]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/bin]
+        ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Found candidate GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Selected GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Candidate multilib: 32]
+        ignore line: [@m32]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm  version 6.4.43483]
+        ignore line: [ (in-process)]
+        ignore line: [ "/usr/bin/clang-20" -cc1 -triple x86_64-pc-linux-gnu -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -debugger-tuning=gdb -fdebug-compilation-dir=/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5 -v -fcoverage-compilation-dir=/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gFo0b5 -resource-dir /usr/lib/clang/20 -dependency-file CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -sys-header-deps -internal-isystem /usr/lib/clang/20/include -internal-isystem /usr/local/include -internal-isystem /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../x86_64-pc-linux-gnu/include -internal-externc-isystem /include -internal-externc-isystem /usr/include -ferror-limit 19 -stack-protector 2 -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -x c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 20.1.8 based upon LLVM 20.1.8 default target x86_64-pc-linux-gnu]
+        ignore line: [ignoring nonexistent directory "/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [ignoring nonexistent directory "/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/clang/20/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_0c666]
+        ignore line: [/sbin/cmake -E cmake_link_script CMakeFiles/cmTC_0c666.dir/link.txt --verbose=1]
+        ignore line: [clang version 20.1.8]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /usr/bin]
+        ignore line: [Found candidate GCC installation: /usr/bin/../lib/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Found candidate GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Selected GCC installation: /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+        ignore line: [Candidate multilib: .]
+        ignore line: [@m64]
+        ignore line: [Candidate multilib: 32]
+        ignore line: [@m32]
+        ignore line: [Selected multilib: .]
+        ignore line: [@m64]
+        ignore line: [Found HIP installation: /opt/rocm  version 6.4.43483]
+        link line: [ "/usr/bin/ld" --hash-style=gnu --build-id --eh-frame-hdr -m elf_x86_64 -pie -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTC_0c666 /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/Scrt1.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crti.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o -L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1 -L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/lib -L/usr/lib -v CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crtn.o]
+          arg [/usr/bin/ld] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_0c666] ==> ignore
+          arg [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/Scrt1.o] ==> obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/Scrt1.o]
+          arg [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crti.o] ==> obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crti.o]
+          arg [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o] ==> obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o]
+          arg [-L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1] ==> dir [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+          arg [-L/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64] ==> dir [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64]
+          arg [-L/lib/../lib64] ==> dir [/lib/../lib64]
+          arg [-L/usr/lib/../lib64] ==> dir [/usr/lib/../lib64]
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_0c666.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--no-as-needed] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--no-as-needed] ==> ignore
+          arg [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o] ==> obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o]
+          arg [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crtn.o] ==> obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crtn.o]
+        linker tool for 'C': /usr/bin/ld
+        collapse obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/Scrt1.o] ==> [/usr/lib64/Scrt1.o]
+        collapse obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crti.o] ==> [/usr/lib64/crti.o]
+        collapse obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o] ==> [/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o]
+        collapse obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o] ==> [/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o]
+        collapse obj [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64/crtn.o] ==> [/usr/lib64/crtn.o]
+        collapse library dir [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1] ==> [/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1]
+        collapse library dir [/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/15.1.1/../../../../lib64] ==> [/usr/lib64]
+        collapse library dir [/lib/../lib64] ==> [/lib64]
+        collapse library dir [/usr/lib/../lib64] ==> [/usr/lib64]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib64/Scrt1.o;/usr/lib64/crti.o;/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtbeginS.o;/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1/crtendS.o;/usr/lib64/crtn.o]
+        implicit dirs: [/usr/lib64/gcc/x86_64-pc-linux-gnu/15.1.1;/usr/lib64;/lib64;/lib;/usr/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:36 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:270 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the C compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils) 2.44.0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/usr/share/cmake/Modules/FindThreads.cmake:97 (check_c_source_compiles)"
+      - "/usr/share/cmake/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "libs/hidapi/linux/CMakeLists.txt:9 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_0df53/fast
+        /sbin/make  -f CMakeFiles/cmTC_0df53.dir/build.make CMakeFiles/cmTC_0df53.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB'
+        Building C object CMakeFiles/cmTC_0df53.dir/src.c.o
+        /sbin/clang -DCMAKE_HAVE_LIBC_PTHREAD  -Wall -Wextra -O2  -fPIE -MD -MT CMakeFiles/cmTC_0df53.dir/src.c.o -MF CMakeFiles/cmTC_0df53.dir/src.c.o.d -o CMakeFiles/cmTC_0df53.dir/src.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB/src.c
+        Linking C executable cmTC_0df53
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_0df53.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_0df53.dir/src.c.o -o cmTC_0df53
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-iwOSoB'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/usr/share/cmake/Modules/FindIconv.cmake:118 (check_c_source_compiles)"
+      - "libs/hidapi/libusb/CMakeLists.txt:30 (find_package)"
+    checks:
+      - "Performing Test Iconv_IS_BUILT_IN"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "Iconv_IS_BUILT_IN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_e4c82/fast
+        /sbin/make  -f CMakeFiles/cmTC_e4c82.dir/build.make CMakeFiles/cmTC_e4c82.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1'
+        Building C object CMakeFiles/cmTC_e4c82.dir/src.c.o
+        /sbin/clang -DIconv_IS_BUILT_IN  -Wall -Wextra -O2  -fPIE -MD -MT CMakeFiles/cmTC_e4c82.dir/src.c.o -MF CMakeFiles/cmTC_e4c82.dir/src.c.o.d -o CMakeFiles/cmTC_e4c82.dir/src.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1/src.c
+        Linking C executable cmTC_e4c82
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_e4c82.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_e4c82.dir/src.c.o -o cmTC_e4c82
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-yuxqm1'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "libs/hidapi/libusb/CMakeLists.txt:73 (check_c_source_compiles)"
+    checks:
+      - "Performing Test HIDAPI_ICONV_CONST"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HIDAPI_ICONV_CONST"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_d4b07/fast
+        /sbin/make  -f CMakeFiles/cmTC_d4b07.dir/build.make CMakeFiles/cmTC_d4b07.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl'
+        Building C object CMakeFiles/cmTC_d4b07.dir/src.c.o
+        /sbin/clang -DHIDAPI_ICONV_CONST  -Wall -Wextra -O2  -fPIE -MD -MT CMakeFiles/cmTC_d4b07.dir/src.c.o -MF CMakeFiles/cmTC_d4b07.dir/src.c.o.d -o CMakeFiles/cmTC_d4b07.dir/src.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl/src.c
+        /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl/src.c:2:27: error: conflicting types for 'iconv'
+            2 |             extern size_t iconv (iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft);
+              |                           ^
+        /usr/include/iconv.h:49:15: note: previous declaration is here
+           49 | extern size_t iconv (iconv_t __cd, char **__restrict __inbuf,
+              |               ^
+        1 error generated.
+        make[1]: *** [CMakeFiles/cmTC_d4b07.dir/build.make:82: CMakeFiles/cmTC_d4b07.dir/src.c.o] Error 1
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-U1H4Rl'
+        make: *** [Makefile:134: cmTC_d4b07/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:35 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for clock_gettime"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_CLOCK_GETTIME"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_bc637/fast
+        /sbin/make  -f CMakeFiles/cmTC_bc637.dir/build.make CMakeFiles/cmTC_bc637.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe'
+        Building C object CMakeFiles/cmTC_bc637.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=clock_gettime -MD -MT CMakeFiles/cmTC_bc637.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_bc637.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_bc637.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe/CheckFunctionExists.c
+        Linking C executable cmTC_bc637
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_bc637.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=clock_gettime CMakeFiles/cmTC_bc637.dir/CheckFunctionExists.c.o -o cmTC_bc637
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-1HJWIe'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:36 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for pthread_condattr_setclock"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_PTHREAD_CONDATTR_SETCLOCK"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_a325d/fast
+        /sbin/make  -f CMakeFiles/cmTC_a325d.dir/build.make CMakeFiles/cmTC_a325d.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8'
+        Building C object CMakeFiles/cmTC_a325d.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_condattr_setclock -MD -MT CMakeFiles/cmTC_a325d.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_a325d.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_a325d.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8/CheckFunctionExists.c
+        Linking C executable cmTC_a325d
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_a325d.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_condattr_setclock CMakeFiles/cmTC_a325d.dir/CheckFunctionExists.c.o -o cmTC_a325d
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-V9ajo8'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:37 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for pthread_setname_np"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_PTHREAD_SETNAME_NP"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_0dc9f/fast
+        /sbin/make  -f CMakeFiles/cmTC_0dc9f.dir/build.make CMakeFiles/cmTC_0dc9f.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ'
+        Building C object CMakeFiles/cmTC_0dc9f.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_setname_np -MD -MT CMakeFiles/cmTC_0dc9f.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_0dc9f.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_0dc9f.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ/CheckFunctionExists.c
+        Linking C executable cmTC_0dc9f
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_0dc9f.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_setname_np CMakeFiles/cmTC_0dc9f.dir/CheckFunctionExists.c.o -o cmTC_0dc9f
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZYIdKQ'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:38 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for pthread_threadid_np"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_PTHREAD_THREADID_NP"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_d0a1d/fast
+        /sbin/make  -f CMakeFiles/cmTC_d0a1d.dir/build.make CMakeFiles/cmTC_d0a1d.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i'
+        Building C object CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_threadid_np -MD -MT CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i/CheckFunctionExists.c
+        Linking C executable cmTC_d0a1d
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_d0a1d.dir/link.txt --verbose=1
+        /usr/bin/ld: CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o: in function `main':
+        CheckFunctionExists.c:(.text+0x9): undefined reference to `pthread_threadid_np'
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pthread_threadid_np CMakeFiles/cmTC_d0a1d.dir/CheckFunctionExists.c.o -o cmTC_d0a1d
+        make[1]: *** [CMakeFiles/cmTC_d0a1d.dir/build.make:103: cmTC_d0a1d] Error 1
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-DWqO3i'
+        make: *** [Makefile:134: cmTC_d0a1d/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:39 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for eventfd"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_EVENTFD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_20c01/fast
+        /sbin/make  -f CMakeFiles/cmTC_20c01.dir/build.make CMakeFiles/cmTC_20c01.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW'
+        Building C object CMakeFiles/cmTC_20c01.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=eventfd -MD -MT CMakeFiles/cmTC_20c01.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_20c01.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_20c01.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW/CheckFunctionExists.c
+        Linking C executable cmTC_20c01
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_20c01.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=eventfd CMakeFiles/cmTC_20c01.dir/CheckFunctionExists.c.o -o cmTC_20c01
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-foJqwW'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:40 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for pipe2"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_PIPE2"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_85436/fast
+        /sbin/make  -f CMakeFiles/cmTC_85436.dir/build.make CMakeFiles/cmTC_85436.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu'
+        Building C object CMakeFiles/cmTC_85436.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pipe2 -MD -MT CMakeFiles/cmTC_85436.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_85436.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_85436.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu/CheckFunctionExists.c
+        Linking C executable cmTC_85436
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_85436.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=pipe2 CMakeFiles/cmTC_85436.dir/CheckFunctionExists.c.o -o cmTC_85436
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-m6d6Mu'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:41 (check_function_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for syslog"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_SYSLOG"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_e819a/fast
+        /sbin/make  -f CMakeFiles/cmTC_e819a.dir/build.make CMakeFiles/cmTC_e819a.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS'
+        Building C object CMakeFiles/cmTC_e819a.dir/CheckFunctionExists.c.o
+        /sbin/clang   -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=syslog -MD -MT CMakeFiles/cmTC_e819a.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_e819a.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_e819a.dir/CheckFunctionExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS/CheckFunctionExists.c
+        Linking C executable cmTC_e819a
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_e819a.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2 -DCHECK_FUNCTION_EXISTS=syslog CMakeFiles/cmTC_e819a.dir/CheckFunctionExists.c.o -o cmTC_e819a
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-ZSINqS'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:43 (check_include_files)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for include file asm/types.h"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_ASM_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_8090b/fast
+        /sbin/make  -f CMakeFiles/cmTC_8090b.dir/build.make CMakeFiles/cmTC_8090b.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB'
+        Building C object CMakeFiles/cmTC_8090b.dir/HAVE_ASM_TYPES_H.c.o
+        /sbin/clang   -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_8090b.dir/HAVE_ASM_TYPES_H.c.o -MF CMakeFiles/cmTC_8090b.dir/HAVE_ASM_TYPES_H.c.o.d -o CMakeFiles/cmTC_8090b.dir/HAVE_ASM_TYPES_H.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB/HAVE_ASM_TYPES_H.c
+        Linking C executable cmTC_8090b
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_8090b.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_8090b.dir/HAVE_ASM_TYPES_H.c.o -o cmTC_8090b
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-TYvQDB'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:45 (check_include_files)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for include file string.h"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_STRING_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_6ccfb/fast
+        /sbin/make  -f CMakeFiles/cmTC_6ccfb.dir/build.make CMakeFiles/cmTC_6ccfb.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2'
+        Building C object CMakeFiles/cmTC_6ccfb.dir/HAVE_STRING_H.c.o
+        /sbin/clang   -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_6ccfb.dir/HAVE_STRING_H.c.o -MF CMakeFiles/cmTC_6ccfb.dir/HAVE_STRING_H.c.o.d -o CMakeFiles/cmTC_6ccfb.dir/HAVE_STRING_H.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2/HAVE_STRING_H.c
+        Linking C executable cmTC_6ccfb
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_6ccfb.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_6ccfb.dir/HAVE_STRING_H.c.o -o cmTC_6ccfb
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-gQLVl2'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckIncludeFiles.cmake:141 (try_compile)"
+      - "libs/libusb/CMakeLists.txt:46 (check_include_files)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for include file sys/time.h"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_SYS_TIME_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_4a40b/fast
+        /sbin/make  -f CMakeFiles/cmTC_4a40b.dir/build.make CMakeFiles/cmTC_4a40b.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8'
+        Building C object CMakeFiles/cmTC_4a40b.dir/HAVE_SYS_TIME_H.c.o
+        /sbin/clang   -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_4a40b.dir/HAVE_SYS_TIME_H.c.o -MF CMakeFiles/cmTC_4a40b.dir/HAVE_SYS_TIME_H.c.o.d -o CMakeFiles/cmTC_4a40b.dir/HAVE_SYS_TIME_H.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8/HAVE_SYS_TIME_H.c
+        Linking C executable cmTC_4a40b
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_4a40b.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_4a40b.dir/HAVE_SYS_TIME_H.c.o -o cmTC_4a40b
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-FKfEK8'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckSymbolExists.cmake:160 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckSymbolExists.cmake:65 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "libs/libusb/CMakeLists.txt:48 (check_symbol_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for timerfd_create"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_TIMERFD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_75894/fast
+        /sbin/make  -f CMakeFiles/cmTC_75894.dir/build.make CMakeFiles/cmTC_75894.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud'
+        Building C object CMakeFiles/cmTC_75894.dir/CheckSymbolExists.c.o
+        /sbin/clang   -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_75894.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_75894.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_75894.dir/CheckSymbolExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud/CheckSymbolExists.c
+        Linking C executable cmTC_75894
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_75894.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_75894.dir/CheckSymbolExists.c.o -o cmTC_75894
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-g5YGud'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckSymbolExists.cmake:160 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckSymbolExists.cmake:65 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "libs/libusb/CMakeLists.txt:49 (check_symbol_exists)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Looking for nfds_t"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_NFDS_T"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_98d4d/fast
+        /sbin/make  -f CMakeFiles/cmTC_98d4d.dir/build.make CMakeFiles/cmTC_98d4d.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1'
+        Building C object CMakeFiles/cmTC_98d4d.dir/CheckSymbolExists.c.o
+        /sbin/clang   -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_98d4d.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_98d4d.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_98d4d.dir/CheckSymbolExists.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1/CheckSymbolExists.c
+        /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1/CheckSymbolExists.c:8:19: error: unexpected type name 'nfds_t': expected expression
+            8 |   return ((int*)(&nfds_t))[argc];
+              |                   ^
+        1 error generated.
+        make[1]: *** [CMakeFiles/cmTC_98d4d.dir/build.make:82: CMakeFiles/cmTC_98d4d.dir/CheckSymbolExists.c.o] Error 1
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-mj2Az1'
+        make: *** [Makefile:134: cmTC_98d4d/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckSourceCompiles.cmake:89 (cmake_check_source_compiles)"
+      - "/usr/share/cmake/Modules/CheckStructHasMember.cmake:85 (check_source_compiles)"
+      - "libs/libusb/CMakeLists.txt:51 (check_struct_has_member)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Performing Test HAVE_STRUCT_TIMESPEC"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_STRUCT_TIMESPEC"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_d61b5/fast
+        /sbin/make  -f CMakeFiles/cmTC_d61b5.dir/build.make CMakeFiles/cmTC_d61b5.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U'
+        Building C object CMakeFiles/cmTC_d61b5.dir/src.c.o
+        /sbin/clang -DHAVE_STRUCT_TIMESPEC  -Wall -Wextra -O2  -MD -MT CMakeFiles/cmTC_d61b5.dir/src.c.o -MF CMakeFiles/cmTC_d61b5.dir/src.c.o.d -o CMakeFiles/cmTC_d61b5.dir/src.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U/src.c
+        Linking C executable cmTC_d61b5
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_d61b5.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_d61b5.dir/src.c.o -o cmTC_d61b5
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-w25m7U'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:104 (try_compile)"
+      - "/usr/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake/Modules/CheckCCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "libs/libusb/CMakeLists.txt:74 (check_c_compiler_flag)"
+      - "libs/libusb/CMakeLists.txt:108 (generate_config_file)"
+    checks:
+      - "Performing Test HAVE_VISIBILITY"
+    directories:
+      source: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1"
+      binary: "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-Wall -Wextra -O2"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1'
+        
+        Run Build Command(s): /sbin/cmake -E env VERBOSE=1 /sbin/make -f Makefile cmTC_9bd86/fast
+        /sbin/make  -f CMakeFiles/cmTC_9bd86.dir/build.make CMakeFiles/cmTC_9bd86.dir/build
+        make[1]: Entering directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1'
+        Building C object CMakeFiles/cmTC_9bd86.dir/src.c.o
+        /sbin/clang -DHAVE_VISIBILITY  -Wall -Wextra -O2    -fvisibility=hidden -MD -MT CMakeFiles/cmTC_9bd86.dir/src.c.o -MF CMakeFiles/cmTC_9bd86.dir/src.c.o.d -o CMakeFiles/cmTC_9bd86.dir/src.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1/src.c
+        Linking C executable cmTC_9bd86
+        /sbin/cmake -E cmake_link_script CMakeFiles/cmTC_9bd86.dir/link.txt --verbose=1
+        /sbin/clang -Wall -Wextra -O2  CMakeFiles/cmTC_9bd86.dir/src.c.o -o cmTC_9bd86
+        make[1]: Leaving directory '/home/sodiumTsss/Developer/switch2/userspace-switch2/build/CMakeFiles/CMakeScratch/TryCompile-y6alE1'
+        
+      exitCode: 0
+...

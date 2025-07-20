@@ -1,0 +1,80 @@
+[
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build",
+  "command": "/sbin/clang  -I/home/sodiumTsss/Developer/switch2/userspace-switch2/$(PROJECT_SOURCE_DIR)/include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/$(PROJECT_SOURCE_DIR)/libs/hidapi/hidapi -I/home/sodiumTsss/Developer/switch2/userspace-switch2/$(PROJECT_SOURCE_DIR)/libs/libusb/libusb -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/hidapi -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/libusb -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/controllerdriver.dir/src/main.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/src/main.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/src/main.c",
+  "output": "CMakeFiles/controllerdriver.dir/src/main.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/linux",
+  "command": "/sbin/clang -Dhidapi_hidraw_EXPORTS -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/hidapi -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/libusb -Wall -Wextra -O2 -fPIC -o CMakeFiles/hidapi_hidraw.dir/hid.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/linux/hid.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/linux/hid.c",
+  "output": "libs/hidapi/src/linux/CMakeFiles/hidapi_hidraw.dir/hid.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/libusb",
+  "command": "/sbin/clang -Dhidapi_libusb_EXPORTS -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/hidapi -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/libusb -isystem /usr/include/libusb-1.0 -Wall -Wextra -O2 -fPIC -o CMakeFiles/hidapi_libusb.dir/hid.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/libusb/hid.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/hidapi/libusb/hid.c",
+  "output": "libs/hidapi/src/libusb/CMakeFiles/hidapi_libusb.dir/hid.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/core.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/core.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/core.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/core.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/descriptor.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/descriptor.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/descriptor.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/descriptor.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/hotplug.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/hotplug.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/hotplug.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/hotplug.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/io.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/io.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/io.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/io.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/strerror.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/strerror.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/strerror.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/strerror.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/sync.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/sync.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/sync.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/sync.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/os/events_posix.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/events_posix.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/events_posix.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/os/events_posix.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/os/threads_posix.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/threads_posix.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/threads_posix.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/os/threads_posix.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/os/linux_usbfs.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/linux_usbfs.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/linux_usbfs.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/os/linux_usbfs.c.o"
+},
+{
+  "directory": "/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb",
+  "command": "/sbin/clang -DHAVE_LIBUDEV=1 -I/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/libusb/gen_include -I/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os -isystem /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb -Wall -Wextra -O2 -o CMakeFiles/usb-1.0.dir/libusb/libusb/os/linux_udev.c.o -c /home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/linux_udev.c",
+  "file": "/home/sodiumTsss/Developer/switch2/userspace-switch2/libs/libusb/libusb/libusb/os/linux_udev.c",
+  "output": "libs/libusb/CMakeFiles/usb-1.0.dir/libusb/libusb/os/linux_udev.c.o"
+}
+]

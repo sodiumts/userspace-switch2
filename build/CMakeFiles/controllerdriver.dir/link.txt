@@ -1,0 +1,1 @@
+/sbin/clang -Wall -Wextra -O2 -Xlinker --dependency-file=CMakeFiles/controllerdriver.dir/link.d CMakeFiles/controllerdriver.dir/src/main.c.o -o controllerdriver  -Wl,-rpath,/home/sodiumTsss/Developer/switch2/userspace-switch2/build/libs/hidapi/src/linux libs/hidapi/src/linux/libhidapi-hidraw.so.0.16.0 libs/libusb/libusb-1.0.a -lm -ludev
