@@ -7,6 +7,7 @@
 #include <linux/input.h>
 #include <linux/uinput.h>
 
+#include <math.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -34,8 +35,8 @@ const unsigned char OUTUNKNOWNCMD_01 [] = {0x01, 0x91, 0x00, 0x0C, 0x00, 0x00, 0
 const unsigned char OUTUNKNOWNCMD_03 [] = {0x03, 0x91, 0x00, 0x01, 0x00, 0x00, 0x00};
 const unsigned char OUTUNKNOWNCMD_0A [] = {0x0A, 0x91, 0x00, 0x02, 0x00, 0x04, 0x00, 0x00, 0x03, 0x00, 0x00};
 const unsigned char SET_PLAYER_LED_09 [] = {0x09, 0x91, 0x00, 0x07, 0x00, 0x08, 0x00, 0x00, 0x01 /* led bitfield */, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; 
-const unsigned char SET_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x02, 0x00, 0x04, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00};
-const unsigned char CHANGE_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x04, 0x00, 0x04, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00};
+const unsigned char SET_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x02, 0x00, 0x04, 0x00, 0x00, 0b00000000, 0x00, 0x00, 0x00};
+const unsigned char CHANGE_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x04, 0x00, 0x04, 0x00, 0x00, 0b00000000, 0x00, 0x00, 0x00};
 
 typedef struct {
     const unsigned char *data;
@@ -157,8 +158,53 @@ Command commands [] = {
 
 #define NUM_COMMANDS (sizeof(commands) / sizeof(commands[0]))
 
+#define SAMPLE_RATE 48000
+#define FREQUENCY 440
+#define CHANNELS 2
+#define BYTES_PER_SAMPLE (CHANNELS * sizeof(int16_t))
+#define MS_PER_TRANSFER 1 
 
+#define FRAME_BYTES (NUM_PACKETS * PACKET_SIZE) 
 
+#define PACKET_SIZE 192 
+#define NUM_PACKETS 3
+
+static unsigned char *frame_buf;
+static double phase = 0.0;
+static double phase_inc = 2 * M_PI * FREQUENCY / SAMPLE_RATE; 
+
+static struct libusb_transfer *xfer;
+
+#define SAMPLES_PER_PACKET (PACKET_SIZE / BYTES_PER_SAMPLE)  
+#define SAMPLES_PER_FRAME (SAMPLES_PER_PACKET * NUM_PACKETS)  
+
+static void LIBUSB_CALL audio_transfer_cb(struct libusb_transfer *t) {
+    if (t->status != LIBUSB_TRANSFER_COMPLETED) {
+        fprintf(stderr, "Audio transfer error: %d\n", t->status);
+        libusb_free_transfer(t);
+        free(frame_buf);
+        xfer = NULL;
+        return;
+    }
+
+    int16_t *pcm = (int16_t*)frame_buf;
+    for (int i = 0; i < SAMPLES_PER_FRAME; i++) {
+        double value = sin(phase) * 0.3; 
+        int16_t s = (int16_t)(value * 32767);
+        pcm[i * CHANNELS] = s;
+        pcm[i * CHANNELS + 1] = s;
+        phase += phase_inc;
+        if (phase >= 2*M_PI) phase -= 2*M_PI;
+    }
+
+    // Resubmit transfer
+    if (libusb_submit_transfer(t) < 0) {
+        fprintf(stderr, "Failed to resubmit audio transfer\n");
+        libusb_free_transfer(t);
+        free(frame_buf);
+        xfer = NULL;
+    }
+}
 
 int controllerType = -1;
 
@@ -220,6 +266,91 @@ int init_usb_state(libusb_device *dev) {
     }
     printf("Released device interface\n");
 
+    res = libusb_claim_interface(devHandle, IF_CTRL);
+    if (res != 0) {
+        printf("Libusb audio control interface claim error %s\n", libusb_strerror(res));
+    }
+    res = libusb_claim_interface(devHandle, IF_STREAM);
+    if (res != 0) {
+        printf("Libusb audio stream interface claim error %s\n", libusb_strerror(res));
+    }
+
+
+    res = libusb_set_interface_alt_setting(devHandle, IF_STREAM, ALT_SETTING);
+    if (res != 0) {
+        printf("Libusb alt setting error %s\n", libusb_strerror(res));
+    }
+
+    uint32_t sample_rate = htole32(SAMPLE_RATE); 
+    libusb_control_transfer(
+        devHandle,
+        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
+        SET_CUR,
+        (SAMPLING_FREQ_CONTROL << 8),
+        IF_STREAM,  
+        (unsigned char*)&sample_rate,
+        sizeof(sample_rate),
+        1000
+    );
+
+    uint8_t unmute = 0x00;  // 0 = unmute
+    libusb_control_transfer(
+        devHandle,
+        LIBUSB_ENDPOINT_OUT | LIBUSB_REQUEST_TYPE_CLASS | LIBUSB_RECIPIENT_INTERFACE,
+        SET_CUR,
+        (MUTE_CONTROL << 8) | 0x01, 
+        IF_STREAM,
+        &unmute,
+        sizeof(unmute),
+        1000
+    );
+
+    xfer = libusb_alloc_transfer(NUM_PACKETS);
+    if (!xfer) {
+        fprintf(stderr, "Failed to allocate transfer\n");
+        return 1;
+    }
+
+    frame_buf = malloc(FRAME_BYTES);
+    if (!frame_buf) {
+        fprintf(stderr, "Failed to allocate audio buffer\n");
+        libusb_free_transfer(xfer);
+        return 1;
+    }
+
+    memset(frame_buf, 0, FRAME_BYTES);
+
+    libusb_fill_iso_transfer(
+        xfer,
+        devHandle,
+        ISO_ES_OUT, 
+        frame_buf,
+        FRAME_BYTES,
+        NUM_PACKETS,
+        audio_transfer_cb,
+        NULL,
+        0 
+    );
+    for (int i = 0; i < NUM_PACKETS; i++) {
+        xfer->iso_packet_desc[i].length = PACKET_SIZE;
+    }
+
+    int r = libusb_submit_transfer(xfer);
+    if (r < 0) {
+        fprintf(stderr, "libusb_submit_transfer failed: %s\n", libusb_error_name(r));
+        libusb_free_transfer(xfer);
+        free(frame_buf);
+        return r;
+    }
+
+    printf("Audio transfer submitted successfully\n");
+
+    while (xfer) {
+        if (libusb_handle_events_completed(NULL, NULL) < 0)
+            break;
+    }
+    libusb_release_interface(devHandle, IF_STREAM);
+    libusb_release_interface(devHandle, IF_CTRL);
      
     libusb_close(devHandle);
     printf("Closed device handle\n");
@@ -258,195 +389,6 @@ int emit_sync(int fd) {
 }
 
 
-int handle_controller_inputs() {
-    int res = hid_init();
-    if (res != 0) {
-        printf("HID init error: %s\n", hid_error(NULL));
-        return 1;
-    }
-
-    hid_device* handle = hid_open(NINTENDO_VENID, controllerType, NULL);
-    if (!handle) { 
-        printf("HID open error: %s\n", hid_error(NULL));
-        return 1;
-    }
-    
-    unsigned char data[64];
-    
-    int fd = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
-    ioctl(fd, UI_SET_EVBIT, EV_KEY);
-    ioctl(fd, UI_SET_EVBIT, EV_ABS);
-    // DPad
-    ioctl(fd, UI_SET_ABSBIT, ABS_HAT0X);
-    ioctl(fd, UI_SET_ABSBIT, ABS_HAT0Y);
-
-    ioctl(fd, UI_SET_ABSBIT, ABS_X);
-    ioctl(fd, UI_SET_ABSBIT, ABS_Y);
-    ioctl(fd, UI_SET_ABSBIT, ABS_RX);
-    ioctl(fd, UI_SET_ABSBIT, ABS_RY);
-    
-    if (controllerType == SW2GCN_PID) {
-        printf("Setting up triggers for gc controller\n");
-        ioctl(fd, UI_SET_ABSBIT, ABS_Z);
-        ioctl(fd, UI_SET_ABSBIT, ABS_RZ);
-    }
-
-    // Buttons
-    for (size_t i = 0; i < sizeof(emmitableButtons) / sizeof(emmitableButtons[0]); i++) {
-        ioctl(fd, UI_SET_KEYBIT, emmitableButtons[i]);
-    }
-
-    struct uinput_user_dev uidev;
-
-    memset(&uidev, 0, sizeof(uidev));
-    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "Translation gamepad");
-    uidev.id.bustype = BUS_USB;
-    uidev.id.vendor = 0x1234;
-    uidev.id.product = 0x5678;
-    uidev.id.version = 1;
-
-    uidev.absmin[ABS_HAT0X] = -1;
-    uidev.absmax[ABS_HAT0X] = 1;
-    uidev.absmin[ABS_HAT0Y] = -1;
-    uidev.absmax[ABS_HAT0Y] = 1;
-
-    uidev.absmin[ABS_X] = -32768;
-    uidev.absmax[ABS_X] = 32767;
-    uidev.absmin[ABS_Y] = -32768;
-    uidev.absmax[ABS_Y] = 32767;
-    
-    uidev.absmin[ABS_RX] = -32768;
-    uidev.absmax[ABS_RX] = 32767;
-    uidev.absmin[ABS_RY] = -32768;
-    uidev.absmax[ABS_RY] = 32767;
-
-    if (controllerType == SW2GCN_PID) {
-        uidev.absmin[ABS_Z] = 0;
-        uidev.absmax[ABS_Z] = 255;
-        uidev.absmin[ABS_RZ] = 0;
-        uidev.absmax[ABS_RZ] = 255;
-    }
-
-    write(fd, &uidev, sizeof(uidev));
-    
-    if(ioctl(fd, UI_DEV_CREATE) < 0) {
-        printf("Failed to create device");
-        close(fd);
-        return 1;
-    }
-    while(true){
-        res = hid_read(handle, data, sizeof(data));
-
-        if (res == -1) {
-            printf("HID read error: %s\n", hid_error(NULL));
-            close(fd);
-            return 1; 
-        }
-
-        bool changed = false;
-        for (size_t i = 0; i < NUM_MAPPINGS; i++) {
-            struct ButtonMapping mapping = buttons[i];
-            int pressed = !!(data[mapping.payloadByte] & mapping.mask);
-            if (pressed != mapping.lastState) {
-                emit_event(fd, EV_KEY, mapping.code, pressed);
-                buttons[i].lastState = pressed;
-                changed = true;
-            }
-
-            if (changed)
-                emit_sync(fd);
-        } 
-
-        changed = false; 
-        for (size_t i = 0; i < NUM_DPAD; i++) {
-            struct DpadMapping mapping = dpad[i];
-            int pressed = !!(data[mapping.payloadByte] & mapping.mask);
-            if(pressed != mapping.lastState) {
-                int hatx = 0;
-                int haty = 0;
-
-                dpad[i].lastState = pressed;        
-                
-                if (DPAD_LEFT == i || DPAD_RIGHT == i) {
-                    if (dpad[DPAD_LEFT].lastState)
-                        hatx = -1;
-                    else if (dpad[DPAD_RIGHT].lastState)
-                        hatx = 1;
-
-                    emit_event(fd, EV_ABS, ABS_HAT0X, hatx);
-                }
-
-                if (DPAD_UP == i || DPAD_DOWN == i) {
-                    if (dpad[DPAD_UP].lastState)
-                        haty = -1;
-                    else if (dpad[DPAD_DOWN].lastState)
-                        haty = 1;
-
-                    emit_event(fd, EV_ABS, ABS_HAT0Y, haty);
-                } 
-                changed = true;
-            }
-
-
-            if (changed)
-                emit_sync(fd);
-        }
-
-        changed = false;
-        for (size_t i = 0; i < NUM_STICKS; i++) {
-            struct AnalogueStick map = sticks[i];
-            uint8_t *stickData = data + map.payloadStart;
-            // get 2 12 bit values out of 3 bytes
-            uint16_t xval = stickData[0] | ((stickData[1] & 0x0F) << 8);
-            uint16_t yval = (stickData[1] >> 4) | (stickData[2] << 4);
-
-            if (xval != map.lastStateX) {
-                int32_t x_scaled = (int32_t)(xval - 2048) * 32767 / 2047;
-                emit_event(fd, EV_ABS, map.codeX, x_scaled);
-                sticks[i].lastStateX = xval;
-                changed = true;
-            }
-
-            if (yval != map.lastStateY) {
-                int32_t y_scaled = (int32_t)(yval - 2048) * 32767 / 2047;
-                y_scaled = -1 * y_scaled;
-                emit_event(fd, EV_ABS, map.codeY, y_scaled);
-                sticks[i].lastStateY = yval;
-                changed = true;
-            }
-
-            if (changed)
-                emit_sync(fd);
-        }
-        
-        changed = false;
-        // For gamecube controller
-        if (controllerType == SW2GCN_PID) {
-            for (size_t i = 0; i < NUM_TRIGGERS; i++) {
-                struct AnalogueTriggers map = triggers[i];
-                unsigned char pressedAmount = data[map.payloadByte];
-                if (pressedAmount != map.lastState) {
-                    triggers[i].lastState = pressedAmount;
-
-                    // Remap 36-190 to 0-255
-                    int clamped = pressedAmount;
-                    if (pressedAmount < TRIGGER_RANGE_MIN) clamped = TRIGGER_RANGE_MIN;
-                    if (pressedAmount > TRIGGER_RANGE_MAX) clamped = TRIGGER_RANGE_MAX;
-                    int mapped = (clamped - TRIGGER_RANGE_MIN) * 255 / (TRIGGER_RANGE_MAX - TRIGGER_RANGE_MIN);
-                    emit_event(fd, EV_ABS, map.code, mapped);
-                    changed = true;
-                }
-
-                if(changed)
-                    emit_sync(fd);
-            }
-        }
-    }
-
-    return 0;
-}
-
-
 int main() {
     libusb_init_context(NULL, NULL, 0);
 
@@ -480,11 +422,5 @@ int main() {
     libusb_free_device_list(devs, 1);
     libusb_exit(NULL);
 
-    if(controllerType != -1) {
-        int res = handle_controller_inputs(); 
-        if (res != 0) {
-            return res;
-        }
-    } 
     return 0;
 }

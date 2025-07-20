@@ -1,1 +1,0 @@
-/sbin/clang -fPIC -Wall -Wextra -O2 -Xlinker --dependency-file=CMakeFiles/hidapi_libusb.dir/link.d -shared -Wl,-soname,libhidapi-libusb.so.0 -o libhidapi-libusb.so.0.16.0 CMakeFiles/hidapi_libusb.dir/hid.c.o  /usr/lib/libusb-1.0.so

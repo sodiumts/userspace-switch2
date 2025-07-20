@@ -18,5 +18,5 @@ add_executable(
     src/main.c
 )
 
-target_link_libraries(controllerdriver PRIVATE hidapi::hidapi usb-1.0)
+target_link_libraries(controllerdriver PRIVATE hidapi::hidapi usb-1.0 m)
 
