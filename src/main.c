@@ -36,6 +36,7 @@ const unsigned char OUTUNKNOWNCMD_0A [] = {0x0A, 0x91, 0x00, 0x02, 0x00, 0x04, 0
 const unsigned char SET_PLAYER_LED_09 [] = {0x09, 0x91, 0x00, 0x07, 0x00, 0x08, 0x00, 0x00, 0x01 /* led bitfield */, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; 
 const unsigned char SET_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x02, 0x00, 0x04, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00};
 const unsigned char CHANGE_FEATURE_FLAGS [] = {0x0c, 0x91, 0x01, 0x04, 0x00, 0x04, 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00};
+const unsigned char VIBRO [] = {0x0A, 0x91, 0x01, 0x02, 0x00, 0x04, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00};
 
 typedef struct {
     const unsigned char *data;
@@ -102,7 +103,6 @@ struct AnalogueStick {
     uint16_t lastStateX;
     uint16_t lastStateY;
 };
-
 enum {LEFT_STICK = 0, RIGHT_STICK};
 struct AnalogueStick sticks [] = {
     {LEFT_STICK_BYTE, 3, ABS_X, ABS_Y, 0, 0},
@@ -152,13 +152,16 @@ Command commands [] = {
     {OUTUNKNOWNCMD_0A, sizeof(OUTUNKNOWNCMD_0A)},
     {SET_PLAYER_LED_09, sizeof(SET_PLAYER_LED_09)},
     {SET_FEATURE_FLAGS, sizeof(SET_FEATURE_FLAGS)},
-    {CHANGE_FEATURE_FLAGS, sizeof(CHANGE_FEATURE_FLAGS)}
+    {CHANGE_FEATURE_FLAGS, sizeof(CHANGE_FEATURE_FLAGS)},
+    {VIBRO, sizeof(VIBRO)}
 };
 
 #define NUM_COMMANDS (sizeof(commands) / sizeof(commands[0]))
 
 
-
+uint16_t primary_cal[6];
+uint16_t secondary_cal[6];
+uint16_t trigger_cal[2];
 
 int controllerType = -1;
 
@@ -178,6 +181,71 @@ int send_init_sequence(libusb_device_handle *devHandle) {
             return res;
         }
     }
+    return 0;
+}
+
+void unpack_12bit_sequence(
+    const uint8_t *in_bytes,
+    size_t         byte_len,
+    size_t         count,
+    uint16_t      *out_vals
+) {
+    size_t   total_bits = count * 12;
+    size_t   needed_bytes = (total_bits + 7) / 8;
+    if (byte_len < needed_bytes) {
+        fprintf(stderr, "Not enough input bytes: have %zu, need %zu\n",
+                byte_len, needed_bytes);
+        return;
+    }
+
+    for (size_t i = 0; i < count; i++) {
+        size_t bit_pos   = i * 12;
+        size_t byte_idx  = bit_pos / 8;
+        size_t bit_offset= bit_pos % 8;
+
+        // grab the next 3 bytes (we need up to 12 + 7 = 19 bits)
+        uint32_t chunk = in_bytes[byte_idx]
+                       | (uint32_t)in_bytes[byte_idx + 1] << 8
+                       | (uint32_t)in_bytes[byte_idx + 2] << 16;
+
+        // shift down to align the 12-bit word, then mask
+        out_vals[i] = (chunk >> bit_offset) & 0x0FFF;
+    }
+}
+
+int read_spi_memory(libusb_device_handle *devHandle, int address, unsigned char size, uint16_t *output_cal) {
+    unsigned char read_command [] = {0x02, 0x91, 0x01, 0x04, 0x00, 0x08, 0x00, 0x00, size, 0x7E, 0x00, 0x00, address & 0xFF, (address >> 8) & 0xFF, (address >> 16) & 0xFF, (address >> 24) & 0xFF};
+    int res = libusb_bulk_transfer(devHandle, INPUT_ENDPOINT, read_command, sizeof(read_command) / sizeof(unsigned char), NULL, 500);
+    if (res != LIBUSB_SUCCESS) {
+        printf("Libusb device transfer error %s\n", libusb_strerror(res));
+        return res;
+    }
+    
+    unsigned char data[512];
+    int actual_length;
+
+    res = libusb_bulk_transfer(devHandle, OUTPUT_ENDPOINT, data, sizeof(data), &actual_length, 500);
+    if (res == 0 && actual_length > 0) {
+        const uint8_t *payload   = data + 16;
+        size_t         payload_len = actual_length - 16;
+        if (address == 0x13140) {
+            output_cal[0] = payload[0];
+            output_cal[1] = payload[1];
+        } else {
+            if (payload_len >= 0x28 + 9) {
+                const uint8_t *cal_bytes = payload + 0x28;
+                unpack_12bit_sequence(cal_bytes, /*=*/ 9, /*=*/ 6, output_cal);
+            } else {
+                printf("wrong payload len. \n");
+                return 100;
+            }
+        }
+        
+    } else {
+        printf("Error in bulk receive: %s\n", libusb_strerror(res));
+        return res;
+    }
+    
     return 0;
 }
 
@@ -211,6 +279,15 @@ int init_usb_state(libusb_device *dev) {
     }
 
     printf("Sent Init command sequence\n");
+
+    // read primary stick calibration
+    read_spi_memory(devHandle, 0x13080, 0x40, primary_cal);
+    // read secondary stick calibration
+    read_spi_memory(devHandle, 0x130C0, 0x40, secondary_cal);
+
+    if (controllerType == SW2GCN_PID) {
+        read_spi_memory(devHandle, 0x13140, 0x2, trigger_cal);
+    }
 
 
     res = libusb_release_interface(devHandle, USBINT_NUM);
@@ -257,19 +334,36 @@ int emit_sync(int fd) {
     return emit_event(fd, EV_SYN, SYN_REPORT, 0);
 }
 
+void apply_stick_calibration(int32_t *xval, int32_t *yval, uint16_t *calvals) {
+    int32_t x = *xval - calvals[0];
+    if (x < 0)
+        x = (x * 32767) / calvals[4];
+    else
+        x = (x * 32767) / calvals[2];
 
+    int32_t y = *yval - calvals[1];
+    if (y < 0)
+        y = (y * 32767) / calvals[5];
+    else
+        y = (y * 32767) / calvals[3];
+
+    *xval = x;
+    *yval = y;
+}
 int handle_controller_inputs() {
     int res = hid_init();
     if (res != 0) {
-        printf("HID init error: %s\n", hid_error(NULL));
+        wprintf(L"HID init error: %ls\n", hid_error(NULL));
         return 1;
     }
+    printf("Init HID\n");
 
     hid_device* handle = hid_open(NINTENDO_VENID, controllerType, NULL);
     if (!handle) { 
-        printf("HID open error: %s\n", hid_error(NULL));
+        wprintf(L"HID init error: %ls\n", hid_error(NULL));
         return 1;
     }
+    printf("");
     
     unsigned char data[64];
     
@@ -291,7 +385,6 @@ int handle_controller_inputs() {
         ioctl(fd, UI_SET_ABSBIT, ABS_RZ);
     }
 
-    // Buttons
     for (size_t i = 0; i < sizeof(emmitableButtons) / sizeof(emmitableButtons[0]); i++) {
         ioctl(fd, UI_SET_KEYBIT, emmitableButtons[i]);
     }
@@ -338,7 +431,7 @@ int handle_controller_inputs() {
         res = hid_read(handle, data, sizeof(data));
 
         if (res == -1) {
-            printf("HID read error: %s\n", hid_error(NULL));
+            wprintf(L"HID init error: %ls\n", hid_error(NULL));
             close(fd);
             return 1; 
         }
@@ -399,16 +492,29 @@ int handle_controller_inputs() {
             // get 2 12 bit values out of 3 bytes
             uint16_t xval = stickData[0] | ((stickData[1] & 0x0F) << 8);
             uint16_t yval = (stickData[1] >> 4) | (stickData[2] << 4);
+            
+            
+            int32_t xcal = xval;
+            int32_t ycal = yval;
+            
+            // apply calibration
+            if (i == 0) {
+                apply_stick_calibration(&xcal, &ycal, primary_cal);
+            } else { 
+                apply_stick_calibration(&xcal, &ycal, secondary_cal);
+            }
 
             if (xval != map.lastStateX) {
-                int32_t x_scaled = (int32_t)(xval - 2048) * 32767 / 2047;
+                //int32_t x_scaled = (int32_t)(xval - 2048) * 32767 / 2047;
+                int32_t x_scaled = xcal;
                 emit_event(fd, EV_ABS, map.codeX, x_scaled);
                 sticks[i].lastStateX = xval;
                 changed = true;
             }
 
             if (yval != map.lastStateY) {
-                int32_t y_scaled = (int32_t)(yval - 2048) * 32767 / 2047;
+                //int32_t y_scaled = (int32_t)(yval - 2048) * 32767 / 2047;
+                int32_t y_scaled = ycal;
                 y_scaled = -1 * y_scaled;
                 emit_event(fd, EV_ABS, map.codeY, y_scaled);
                 sticks[i].lastStateY = yval;
@@ -427,13 +533,22 @@ int handle_controller_inputs() {
                 unsigned char pressedAmount = data[map.payloadByte];
                 if (pressedAmount != map.lastState) {
                     triggers[i].lastState = pressedAmount;
+                    
+                    printf("%d\n", trigger_cal[0]);
+                    printf("%d\n", trigger_cal[1]);
+                    printf("press %d\n", pressedAmount);
 
+                    float scale = (float)(pressedAmount - trigger_cal[i]) / (255 - trigger_cal[i]);
+                    scale = scale < 0 ? 0 : scale;
+                    int32_t cal = (int32_t)(scale * 255);
+                    
+                    printf("cal %d\n", cal);
                     // Remap 36-190 to 0-255
-                    int clamped = pressedAmount;
-                    if (pressedAmount < TRIGGER_RANGE_MIN) clamped = TRIGGER_RANGE_MIN;
-                    if (pressedAmount > TRIGGER_RANGE_MAX) clamped = TRIGGER_RANGE_MAX;
-                    int mapped = (clamped - TRIGGER_RANGE_MIN) * 255 / (TRIGGER_RANGE_MAX - TRIGGER_RANGE_MIN);
-                    emit_event(fd, EV_ABS, map.code, mapped);
+                    //int clamped = pressedAmount;
+                    //if (pressedAmount < TRIGGER_RANGE_MIN) clamped = TRIGGER_RANGE_MIN;
+                    //if (pressedAmount > TRIGGER_RANGE_MAX) clamped = TRIGGER_RANGE_MAX;
+                    //int mapped = (clamped - TRIGGER_RANGE_MIN) * 255 / (TRIGGER_RANGE_MAX - TRIGGER_RANGE_MIN);
+                    emit_event(fd, EV_ABS, map.code, cal);
                     changed = true;
                 }
 
@@ -485,6 +600,8 @@ int main() {
         if (res != 0) {
             return res;
         }
-    } 
+    } else {
+        printf("No controller found\n");
+    }
     return 0;
 }
